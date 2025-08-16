@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>代採購費用計算器</title>
+    <style>
+      body {
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+          "Helvetica Neue", Arial, sans-serif;
+        background-color: #f0f2f5;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        margin: 0;
+        color: #333;
+      }
+      .calculator-container {
+        background-color: #ffffff;
+        padding: 30px 40px;
+        border-radius: 12px;
+        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+        width: 100%;
+        max-width: 400px;
+        text-align: center;
+        box-sizing: border-box;
+      }
+      h1 {
+        color: #1c1e21;
+        margin-bottom: 10px;
+        font-size: 1.8rem;
+      }
+      p.description {
+        color: #606770;
+        margin-bottom: 20px;
+        font-size: 0.95rem;
+      }
+      /* --- 新增：公式顯示區塊樣式 --- */
+      .formula-display {
+        background-color: #f8f9fa;
+        border: 1px solid #e9ecef;
+        padding: 12px;
+        border-radius: 8px;
+        margin-bottom: 25px;
+        font-size: 0.9rem;
+        text-align: left;
+      }
+      .formula-display strong {
+        display: block;
+        margin-bottom: 5px;
+        color: #333;
+        font-size: 0.95rem;
+      }
+      .formula-display span {
+        color: #555;
+      }
+
+      .input-group {
+        margin-bottom: 20px;
+      }
+      label {
+        display: block;
+        text-align: left;
+        margin-bottom: 8px;
+        font-weight: 600;
+        color: #4b4f56;
+      }
+      input[type="number"] {
+        width: 100%;
+        padding: 12px;
+        border: 1px solid #ccd0d5;
+        border-radius: 8px;
+        font-size: 1.1rem;
+        box-sizing: border-box;
+        -moz-appearance: textfield;
+      }
+      input::-webkit-outer-spin-button,
+      input::-webkit-inner-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+      }
+      button {
+        width: 100%;
+        padding: 12px;
+        background-color: #007bff;
+        color: white;
+        border: none;
+        border-radius: 8px;
+        font-size: 1.1rem;
+        font-weight: bold;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+      }
+      button:hover {
+        background-color: #0056b3;
+      }
+      #result {
+        margin-top: 25px;
+        font-size: 1.3rem;
+        font-weight: bold;
+        color: #d9534f;
+        min-height: 70px; /* 增加最小高度以容納公式 */
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+      }
+      #result .breakdown {
+        font-size: 0.85rem;
+        font-weight: normal;
+        color: #606770;
+        margin-top: 8px;
+      }
+      /* --- 新增：計算明細樣式 --- */
+      #result .calculation-steps {
+        font-size: 0.8rem;
+        font-weight: normal;
+        color: #888;
+        margin-top: 10px;
+        font-family: monospace; /* 使用等寬字體讓數字和符號更好看 */
+      }
+    </style>
+  </head>
+  <body>
+    <div class="calculator-container">
+      <h1>代採購費用計算器</h1>
+      <p class="description">輸入商品人民幣價格，為您計算台幣總價。</p>
+
+      <div class="formula-display">
+        <strong>計價方式</strong>
+        <span>(商品人民幣價格 × 4.5 匯率) + 20% 服務費</span>
+      </div>
+
+      <div class="input-group">
+        <label for="rmbPrice">人民幣價格 (CNY)</label>
+        <input type="number" id="rmbPrice" placeholder="例如: 100" />
+      </div>
+
+      <button onclick="calculate()">計算總價</button>
+
+      <div id="result">請輸入金額後點擊按鈕</div>
+    </div>
+
+    <script>
+      function calculate() {
+        const rmbPriceInput = document.getElementById("rmbPrice");
+        const resultDiv = document.getElementById("result");
+        const rmbPrice = parseFloat(rmbPriceInput.value);
+
+        if (isNaN(rmbPrice) || rmbPrice <= 0) {
+          resultDiv.innerHTML = "請輸入有效的金額";
+          return;
+        }
+
+        const exchangeRate = 4.5;
+        const serviceFeeRate = 0.2;
+
+        const twdPrice = rmbPrice * exchangeRate;
+        const serviceFee = twdPrice * serviceFeeRate;
+        const totalTwdPrice = twdPrice + serviceFee;
+
+        // 更新結果顯示，加入動態計算明細
+        resultDiv.innerHTML = `
+                <div>預估總金額: TWD $${Math.round(totalTwdPrice)}</div>
+                <div class="breakdown">(商品台幣 $${Math.round(
+                  twdPrice
+                )} + 服務費 $${Math.round(serviceFee)})</div>
+                <div class="calculation-steps">
+                    計算明細: (${rmbPrice} × ${exchangeRate}) + (${Math.round(
+          twdPrice
+        )} × ${serviceFeeRate})
+                </div>
+            `;
+      }
+    </script>
+  </body>
+</html>
