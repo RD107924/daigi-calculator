@@ -24,17 +24,18 @@
         max-width: 420px;
         text-align: center;
       }
-      /* --- Logo 樣式 --- */
+      /* --- 修改：Logo 樣式，調整下方間距 --- */
       .logo-container {
-        margin-bottom: 20px;
+        margin-bottom: 15px;
       }
       .logo {
         max-width: 150px; /* 您可以在這裡調整 Logo 的大小 */
         height: auto;
       }
+      /* --- 修改：計算器容器樣式，調整上方內距以容納 Logo --- */
       .calculator-container {
         background-color: #ffffff;
-        padding: 30px 40px;
+        padding: 25px 40px 30px; /* 上方 padding 稍微調整 */
         border-radius: 12px;
         box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
         box-sizing: border-box;
@@ -42,6 +43,7 @@
       }
       h1 {
         color: #1c1e21;
+        margin-top: 0; /* 移除 h1 上方預設的 margin */
         margin-bottom: 10px;
         font-size: 1.8rem;
       }
@@ -199,11 +201,11 @@
   </head>
   <body>
     <div class="container">
-      <div class="logo-container">
-        <img src="logo.png" alt="跑跑虎&小跑豬 Logo" class="logo" />
-      </div>
-
       <div class="calculator-container">
+        <div class="logo-container">
+          <img src="logo.png" alt="跑跑虎&小跑豬 Logo" class="logo" />
+        </div>
+
         <h1>代採購費用計算器</h1>
         <p class="description">輸入商品人民幣價格，為您計算台幣總價。</p>
 
