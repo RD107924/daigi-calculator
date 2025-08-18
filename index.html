@@ -12,19 +12,24 @@
         display: flex;
         justify-content: center;
         align-items: center;
-        height: 100vh;
+        min-height: 100vh; /* 使用 min-height 確保內容多時可以滾動 */
         margin: 0;
+        padding: 20px 0; /* 增加上下邊距 */
         color: #333;
+        box-sizing: border-box;
+      }
+      .container {
+        width: 100%;
+        max-width: 420px;
+        text-align: center;
       }
       .calculator-container {
         background-color: #ffffff;
         padding: 30px 40px;
         border-radius: 12px;
         box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
-        width: 100%;
-        max-width: 400px;
-        text-align: center;
         box-sizing: border-box;
+        margin-bottom: 20px;
       }
       h1 {
         color: #1c1e21;
@@ -36,7 +41,6 @@
         margin-bottom: 20px;
         font-size: 0.95rem;
       }
-      /* --- 新增：公式顯示區塊樣式 --- */
       .formula-display {
         background-color: #f8f9fa;
         border: 1px solid #e9ecef;
@@ -55,7 +59,6 @@
       .formula-display span {
         color: #555;
       }
-
       .input-group {
         margin-bottom: 20px;
       }
@@ -97,49 +100,163 @@
       }
       #result {
         margin-top: 25px;
-        font-size: 1.3rem;
-        font-weight: bold;
-        color: #d9534f;
-        min-height: 70px; /* 增加最小高度以容納公式 */
+        padding: 15px;
+        background-color: #fff9e6; /* 淡黃色背景凸顯結果 */
+        border-radius: 8px;
+        border: 1px solid #ffeeba;
+        min-height: 90px;
         display: flex;
         justify-content: center;
         align-items: center;
         flex-direction: column;
       }
+      #result .total-price {
+        font-size: 1.3rem;
+        font-weight: bold;
+        color: #d9534f;
+      }
       #result .breakdown {
         font-size: 0.85rem;
         font-weight: normal;
         color: #606770;
-        margin-top: 8px;
+        margin-top: 5px;
       }
-      /* --- 新增：計算明細樣式 --- */
       #result .calculation-steps {
         font-size: 0.8rem;
         font-weight: normal;
         color: #888;
+        margin-top: 8px;
+        font-family: monospace;
+      }
+      /* --- 新增：發票提醒樣式 --- */
+      .invoice-notice {
+        font-size: 0.8rem;
+        font-weight: bold;
+        color: #007bff;
         margin-top: 10px;
-        font-family: monospace; /* 使用等寬字體讓數字和符號更好看 */
+      }
+
+      /* --- 新增：連結區塊樣式 --- */
+      .links-container {
+        background-color: #ffffff;
+        padding: 20px;
+        border-radius: 12px;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+      }
+      .links-container h2 {
+        font-size: 1.1rem;
+        color: #333;
+        margin-top: 0;
+        margin-bottom: 15px;
+        border-bottom: 1px solid #eee;
+        padding-bottom: 10px;
+      }
+      .link-button {
+        display: block;
+        background-color: #28a745;
+        color: white;
+        padding: 12px;
+        margin-bottom: 10px;
+        border-radius: 8px;
+        text-decoration: none;
+        font-weight: 600;
+        transition: background-color 0.3s ease;
+      }
+      .link-button:hover {
+        background-color: #218838;
+      }
+      .link-button.piggy {
+        background-color: #e83e8c; /* 小跑豬用粉色系 */
+      }
+      .link-button.piggy:hover {
+        background-color: #d81b60;
+      }
+      .app-links {
+        display: flex;
+        justify-content: space-between;
+        gap: 10px;
+      }
+      .app-links .link-button {
+        flex: 1;
+        background-color: #17a2b8;
+      }
+      .app-links .link-button:hover {
+        background-color: #138496;
+      }
+
+      /* --- 新增：頁尾宣告樣式 --- */
+      footer {
+        margin-top: 30px;
+        font-size: 0.85rem;
+        color: #888;
       }
     </style>
   </head>
   <body>
-    <div class="calculator-container">
-      <h1>代採購費用計算器</h1>
-      <p class="description">輸入商品人民幣價格，為您計算台幣總價。</p>
+    <div class="container">
+      <div class="calculator-container">
+        <h1>代採購費用計算器</h1>
+        <p class="description">輸入商品人民幣價格，為您計算台幣總價。</p>
 
-      <div class="formula-display">
-        <strong>計價方式</strong>
-        <span>(商品人民幣價格 × 4.5 匯率) + 20% 服務費</span>
+        <div class="formula-display">
+          <strong>計價方式</strong>
+          <span>(商品人民幣價格 × 4.5 匯率) + 20% 服務費</span>
+        </div>
+
+        <div class="input-group">
+          <label for="rmbPrice">人民幣價格 (CNY)</label>
+          <input type="number" id="rmbPrice" placeholder="例如: 100" />
+        </div>
+
+        <button onclick="calculate()">計算總價</button>
+
+        <div id="result">請輸入金額後點擊按鈕</div>
       </div>
 
-      <div class="input-group">
-        <label for="rmbPrice">人民幣價格 (CNY)</label>
-        <input type="number" id="rmbPrice" placeholder="例如: 100" />
+      <div class="links-container">
+        <h2>跑跑虎集運</h2>
+        <a href="https://lin.ee/1VF9T5G" target="_blank" class="link-button"
+          >LINE 客服</a
+        >
+        <p
+          style="
+            font-size: 0.9rem;
+            color: #555;
+            margin-top: 0px;
+            margin-bottom: 10px;
+          "
+        >
+          APP 下載
+        </p>
+        <div class="app-links">
+          <a href="https://reurl.cc/koE57x" target="_blank" class="link-button"
+            >iOS 系統</a
+          >
+          <a href="https://reurl.cc/rYRlDx" target="_blank" class="link-button"
+            >Android 系統</a
+          >
+        </div>
       </div>
 
-      <button onclick="calculate()">計算總價</button>
+      <div class="links-container" style="margin-top: 15px">
+        <h2>小跑豬傢俱專線</h2>
+        <a
+          href="https://lin.ee/RLESzAm"
+          target="_blank"
+          class="link-button piggy"
+          >LINE 客服</a
+        >
+        <a
+          href="https://piggy-calculator-pro.onrender.com/"
+          target="_blank"
+          class="link-button piggy"
+          >專業版傢俱運費試算器</a
+        >
+      </div>
 
-      <div id="result">請輸入金額後點擊按鈕</div>
+      <footer>
+        <p>本頁面由 跑跑虎 & 小跑豬代採購 開發</p>
+      </footer>
     </div>
 
     <script>
@@ -160,9 +277,11 @@
         const serviceFee = twdPrice * serviceFeeRate;
         const totalTwdPrice = twdPrice + serviceFee;
 
-        // 更新結果顯示，加入動態計算明細
+        // 更新結果顯示，加入發票提醒
         resultDiv.innerHTML = `
-                <div>預估總金額: TWD $${Math.round(totalTwdPrice)}</div>
+                <div class="total-price">預估總金額: TWD $${Math.round(
+                  totalTwdPrice
+                )}</div>
                 <div class="breakdown">(商品台幣 $${Math.round(
                   twdPrice
                 )} + 服務費 $${Math.round(serviceFee)})</div>
@@ -171,6 +290,7 @@
           twdPrice
         )} × ${serviceFeeRate})
                 </div>
+                <div class="invoice-notice">代採購金額一律開立電子發票</div>
             `;
       }
     </script>
