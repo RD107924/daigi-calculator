@@ -4,6 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>代採購費用計算器</title>
+    <link rel="icon" href="logo.png" type="image/png" />
     <style>
       body {
         font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
@@ -12,9 +13,9 @@
         display: flex;
         justify-content: center;
         align-items: center;
-        min-height: 100vh; /* 使用 min-height 確保內容多時可以滾動 */
+        min-height: 100vh;
         margin: 0;
-        padding: 20px 0; /* 增加上下邊距 */
+        padding: 20px 0;
         color: #333;
         box-sizing: border-box;
       }
@@ -101,7 +102,7 @@
       #result {
         margin-top: 25px;
         padding: 15px;
-        background-color: #fff9e6; /* 淡黃色背景凸顯結果 */
+        background-color: #fff9e6;
         border-radius: 8px;
         border: 1px solid #ffeeba;
         min-height: 90px;
@@ -128,15 +129,12 @@
         margin-top: 8px;
         font-family: monospace;
       }
-      /* --- 新增：發票提醒樣式 --- */
       .invoice-notice {
         font-size: 0.8rem;
         font-weight: bold;
         color: #007bff;
         margin-top: 10px;
       }
-
-      /* --- 新增：連結區塊樣式 --- */
       .links-container {
         background-color: #ffffff;
         padding: 20px;
@@ -153,7 +151,7 @@
       }
       .link-button {
         display: block;
-        background-color: #28a745;
+        background-color: #28a745; /* 預設綠色 */
         color: white;
         padding: 12px;
         margin-bottom: 10px;
@@ -164,12 +162,6 @@
       }
       .link-button:hover {
         background-color: #218838;
-      }
-      .link-button.piggy {
-        background-color: #e83e8c; /* 小跑豬用粉色系 */
-      }
-      .link-button.piggy:hover {
-        background-color: #d81b60;
       }
       .app-links {
         display: flex;
@@ -183,8 +175,14 @@
       .app-links .link-button:hover {
         background-color: #138496;
       }
+      /* --- ▼ 修改：新增專業版計算機按鈕的水藍色樣式 ▼ --- */
+      .link-button.calculator-pro {
+        background-color: #17a2b8; /* 水藍色 */
+      }
+      .link-button.calculator-pro:hover {
+        background-color: #138496;
+      }
 
-      /* --- 新增：頁尾宣告樣式 --- */
       footer {
         margin-top: 30px;
         font-size: 0.85rem;
@@ -240,16 +238,13 @@
 
       <div class="links-container" style="margin-top: 15px">
         <h2>小跑豬傢俱專線</h2>
-        <a
-          href="https://lin.ee/RLESzAm"
-          target="_blank"
-          class="link-button piggy"
+        <a href="https://lin.ee/RLESzAm" target="_blank" class="link-button"
           >LINE 客服</a
         >
         <a
           href="https://piggy-calculator-pro.onrender.com/"
           target="_blank"
-          class="link-button piggy"
+          class="link-button calculator-pro"
           >專業版傢俱運費試算器</a
         >
       </div>
@@ -277,7 +272,6 @@
         const serviceFee = twdPrice * serviceFeeRate;
         const totalTwdPrice = twdPrice + serviceFee;
 
-        // 更新結果顯示，加入發票提醒
         resultDiv.innerHTML = `
                 <div class="total-price">預估總金額: TWD $${Math.round(
                   totalTwdPrice
